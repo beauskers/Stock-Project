@@ -1,0 +1,2 @@
+# Stock Project
+ idk yet
