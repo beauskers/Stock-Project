@@ -401,6 +401,7 @@ class Ui_MainWindow(object):
         self.comboBox.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
+        self.comboBox.addItem("")
         self.verticalLayout_21.addWidget(self.comboBox)
         self.orderStatus = QtWidgets.QLabel(parent=self.widget_8)
         self.orderStatus.setMaximumSize(QtCore.QSize(16777215, 50))
@@ -531,7 +532,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralWidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -553,8 +554,10 @@ class Ui_MainWindow(object):
         self.createStatus.setText(_translate("MainWindow", "Test"))
         self.createBtn.setText(_translate("MainWindow", "Create Account →"))
         self.marketStatus.setText(_translate("MainWindow", "Market Status: OPEN"))
+        self.tickerEnter.setText(_translate("MainWindow", "Enter ticker:"))
         self.checkButton.setText(_translate("MainWindow", "Get Info"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Market Order"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Limit Order (WIP)"))
         self.buyButton.setText(_translate("MainWindow", "Buy"))
         self.sellButton.setText(_translate("MainWindow", "Sell"))
         self.balLabel.setText(_translate("MainWindow", "Account Balance: $"))

@@ -769,6 +769,9 @@ border-width: 10px;
 border-radius: 5px;
 color: rgb(0, 0, 0);</string>
                    </property>
+                   <property name="text">
+                    <string/>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -840,6 +843,11 @@ border-radius: 10px;
                       <item>
                        <property name="text">
                         <string>Market Order</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Limit Order (WIP)</string>
                        </property>
                       </item>
                      </widget>

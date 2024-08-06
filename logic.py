@@ -60,10 +60,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
                     stocks_only = line[3::2]
                     amounts_only = line[4::2]
-                    print(stocks_only, amounts_only)
                     for i in range(len(stocks_only)):
                         self.__stocks[stocks_only[i]] = int(amounts_only[i])
-                    print(self.__stocks)
                     self.update()
                     self.usernameEnter.clear()
                     self.passwordEnter.clear()
@@ -147,31 +145,51 @@ class Logic(QMainWindow, Ui_MainWindow):
             elif self.stock.info['currentPrice'] * int(self.amountEnter.text()) > self.__balance:
                 self.orderStatus.setText('Too poor')
             else:
-                if self.ticker in self.__stocks:
-                    self.amount += int(self.amountEnter.text())
-                    fillPrice = self.stock.info['currentPrice']
-                    self.__balance -= fillPrice * int(self.amountEnter.text())
-                    self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
-                    self.__stocks[self.ticker] += self.amount
-                    self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
-                    print(self.__stocks)
-                    self.amount = 0
-                else:
-                    self.amount += int(self.amountEnter.text())
-                    fillPrice = self.stock.info['currentPrice']
-                    self.__balance -= fillPrice * int(self.amountEnter.text())
-                    self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
-                    self.__stocks[self.ticker] = self.amount
-                    self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
-                    print(self.__stocks)
-                    self.amount = 0
-                self.update()
+                if self.comboBox.currentIndex() == 0:
+                    if self.ticker in self.__stocks:
+                        self.amount += int(self.amountEnter.text())
+                        fillPrice = self.stock.info['currentPrice']
+                        self.__balance -= fillPrice * int(self.amountEnter.text())
+                        self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                        self.__stocks[self.ticker] += self.amount
+                        self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
+                        self.amount = 0
+                    else:
+                        self.amount += int(self.amountEnter.text())
+                        fillPrice = self.stock.info['currentPrice']
+                        self.__balance -= fillPrice * int(self.amountEnter.text())
+                        self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                        self.__stocks[self.ticker] = self.amount
+                        self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
+                        self.amount = 0
+                    self.update()
         elif not self.marketOpen:
             self.orderStatus.setText('Market closed')
 
     def sellStock(self):
-        pass
-        # Create stock sell
+        if self.marketOpen:
+            if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
+                self.orderStatus.setText('Invalid stock')
+            elif not self.amountEnter.text().isdigit():
+                self.orderStatus.setText('Invalid amount')
+                self.amountEnter.clear()
+            elif int(self.amountEnter.text()) > self.__stocks[self.ticker]:
+                self.orderStatus.setText('Can\'t oversell assets')
+            else:
+                if self.comboBox.currentIndex() == 0:
+                    if self.ticker in self.__stocks:
+                        self.amount += int(self.amountEnter.text())
+                        fillPrice = self.stock.info['currentPrice']
+                        self.__balance += fillPrice * int(self.amountEnter.text())
+                        self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                        self.__stocks[self.ticker] -= self.amount
+                        self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
+                        self.amount = 0
+                    else:
+                        self.orderStatus.setText('You don\'t own any of that stock')
+                    self.update()
+        elif not self.marketOpen:
+            self.orderStatus.setText('Market closed')
 
     def clear(self):
         self.tickerEnter.clear()
@@ -189,8 +207,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         total = 0
         for stock, amount in self.__stocks.items():
             price = yf.Ticker(stock).info["currentPrice"]
-            text = text + f'{stock}: {amount} - {price:.2f}\n'
-            total += price
+            text = text + f'{stock}: {amount} - {price * amount:.2f}\n'
+            total += (price * amount)
         self.stockShow.setText(text)
         self.stockBal.setText(f'${total:.2f}')
 
@@ -198,7 +216,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         with open('accounts.csv', 'a', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
             info = [self.email, self.password, self.__balance]
-            print(self.__stocks)
             for stock, amount in self.__stocks.items():
                 info.append(stock)
                 info.append(amount)
@@ -207,14 +224,27 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.__balance = 0
         self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
         self.clear()
+        self.cleanUp()
 
     def settings(self):
         self.__balance = int(self.amountEdit.text())
         self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
         self.stackedWidget.setCurrentIndex(2)
 
+    def cleanUp(self):
+        save_list = []
+        with open('accounts.csv', 'r') as csv_file:
+            csv_reader = list(csv.reader(csv_file))
+            if csv_reader:
+                test = csv_reader[-1]
+                save_list.append(test)
+                for row in reversed(csv_reader[:-1]):
+                    if row[0] not in [element[0] for element in save_list]:
+                        save_list.append(row)
+        with open('accounts.csv', 'w') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            for element in save_list:
+                csv_writer.writerow(element)
     # Add login on other pages
 
     # Fix "middeling"
-
-    # Add 4th panel
