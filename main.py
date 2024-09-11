@@ -3,7 +3,7 @@ from logic import *
 
 def main():
     application = QApplication([])
-    # application.setStyle('Fusion')
+    application.setStyle('Fusion')
     # QApplication::setStyle()
     window = Logic()
     window.show()

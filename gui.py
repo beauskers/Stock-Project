@@ -551,7 +551,7 @@ class Ui_MainWindow(object):
         self.settingsLabel.setObjectName("settingsLabel")
         self.verticalLayout_25.addWidget(self.settingsLabel)
         self.checkBox = QtWidgets.QCheckBox(parent=self.settingsWidget)
-        self.checkBox.setEnabled(True)
+        self.checkBox.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
