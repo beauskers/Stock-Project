@@ -1,5 +1,4 @@
-import datetime
-
+import pytz
 from PyQt6.QtWidgets import *
 from gui import *
 import csv
@@ -7,6 +6,17 @@ import re
 import yfinance as yf
 import datetime as d
 import time
+from datetime import datetime, time
+from PyQt6.QtCore import QTimer, QTime
+import time_machine
+
+
+eastern = pytz.timezone('US/Eastern')
+
+@time_machine.travel(eastern.localize(d.datetime(2024, 9, 5, 10, 24)))
+def test_delorean():
+    assert d.date.today().isoformat() == "2024-09-05"
+    print(datetime.now())
 
 
 class Logic(QMainWindow, Ui_MainWindow):
@@ -14,19 +24,18 @@ class Logic(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.stock = None
         self.ticker = None
-        self.marketOpen = True
         self.amount = 0
         self.setupUi(self)
+        self.marketOpen = None
 
         self.today = d.date.today()
-        self.checkMarketStatus()
 
         self.loginBtn.clicked.connect(lambda: self.login())
         self.toCreateBtn.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
-        self.createBtn.clicked.connect(lambda: self.createAcc())
-        self.checkButton.clicked.connect(lambda: self.priceCheck())
-        self.buyButton.clicked.connect(lambda: self.buyStock())
-        self.sellButton.clicked.connect(lambda: self.sellStock())
+        self.createBtn.clicked.connect(lambda: self.create_acc())
+        self.checkButton.clicked.connect(lambda: self.price_check())
+        self.buyButton.clicked.connect(lambda: self.buy_stock())
+        self.sellButton.clicked.connect(lambda: self.sell_stock())
         self.logoutBtn.clicked.connect(lambda: self.logout())
         self.toSettingsBtn.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(3))
         self.buttonEdit.clicked.connect(lambda: self.settings())
@@ -39,6 +48,11 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.password = ''
         self.__balance = 0
         self.__stocks = {}
+
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.check_market_status)
+        self.timer.setInterval(1000)
+        self.check_market_status()
 
     def check_email(self):
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
@@ -70,7 +84,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.loginStatus.setText('Incorrect email or password')
                     self.passwordEnter.clear()
 
-    def createAcc(self):
+    def create_acc(self):
         email_check = self.check_email()
         if email_check:
             self.password = self.createPassEnter.text()
@@ -92,25 +106,36 @@ class Logic(QMainWindow, Ui_MainWindow):
         else:
             self.createStatus.setText('Email is invalid')
 
-    def checkMarketStatus(self):
+    def check_market_status(self):
+        eastern = pytz.timezone('US/Eastern')
+        market_open_time = eastern.localize(datetime.combine(datetime.today(), time(9, 30)))
+        market_close_time = eastern.localize(datetime.combine(datetime.today(), time(16, 0)))
+        utcnow = d.datetime.now(tz=pytz.UTC)
+        estnow = utcnow.astimezone(pytz.timezone('US/Eastern'))
         holidays = []
         todayHoliday = False
         day_of_week = self.today.weekday()
-        # close_time = d.datetime('15:00')
+        print(market_open_time)
+        print(market_close_time)
+        print(datetime.now(eastern))
+        print(market_close_time - datetime.now(eastern))
+        print(market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))
+        # need specific open for before market is opened and after market is closed for open
         if day_of_week < 5 and todayHoliday == False:
-            marketOpen = True
-            # while True:
-            # self.marketStatus.setText(f'Market Status: OPEN - Closes in {(close_time - d.datetime.now())}')
-            # time.sleep(1)
-        else:
-            marketOpen = False
-            # while True:
-            self.marketStatus.setText(f'Market Status: CLOSED - Opens in ')
-            # time.sleep(1)
+            if market_open_time <= datetime.now(eastern) <= market_close_time:
+                self.marketOpen = True
+                self.marketStatus.setText(
+                    f'Market Status: OPEN - Closes in {str((market_close_time - (datetime.now(eastern)))).split(".")[0]}')
+            else:
+                self.marketOpen = False
+                self.marketStatus.setText(
+                    f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern)))).split(".")[0]}')
+        elif day_of_week == 5 and todayHoliday == False:
+            self.marketOpen = False
+            self.marketStatus.setText(
+                f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))).split(".")[0]}')
 
-            # get time to work
-
-    def priceCheck(self):
+    def price_check(self):
         while True:
             if self.tickerEnter.text() == '':
                 self.stockInfo.setText('No ticker entered')
@@ -135,8 +160,38 @@ class Logic(QMainWindow, Ui_MainWindow):
                                        f'\nAnalyst Recommendation: {rec}')
                 break
 
-    def buyStock(self):
-        if self.marketOpen:
+    def buy_stock(self):
+        if self.checkBox.isChecked():
+            if self.marketOpen:
+                if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
+                    self.orderStatus.setText('Invalid stock')
+                elif not self.amountEnter.text().isdigit():
+                    self.orderStatus.setText('Invalid amount')
+                    self.amountEnter.clear()
+                elif self.stock.info['currentPrice'] * int(self.amountEnter.text()) > self.__balance:
+                    self.orderStatus.setText('Too poor')
+                else:
+                    if self.comboBox.currentIndex() == 0:
+                        if self.ticker in self.__stocks:
+                            self.amount += int(self.amountEnter.text())
+                            fillPrice = self.stock.info['currentPrice']
+                            self.__balance -= fillPrice * int(self.amountEnter.text())
+                            self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                            self.__stocks[self.ticker] += self.amount
+                            self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
+                            self.amount = 0
+                        else:
+                            self.amount += int(self.amountEnter.text())
+                            fillPrice = self.stock.info['currentPrice']
+                            self.__balance -= fillPrice * int(self.amountEnter.text())
+                            self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                            self.__stocks[self.ticker] = self.amount
+                            self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
+                            self.amount = 0
+                        self.update()
+            elif not self.marketOpen:
+                self.orderStatus.setText('Market closed')
+        else:
             if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
                 self.orderStatus.setText('Invalid stock')
             elif not self.amountEnter.text().isdigit():
@@ -163,11 +218,33 @@ class Logic(QMainWindow, Ui_MainWindow):
                         self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
                         self.amount = 0
                     self.update()
-        elif not self.marketOpen:
-            self.orderStatus.setText('Market closed')
 
-    def sellStock(self):
-        if self.marketOpen:
+    def sell_stock(self):
+        if self.checkBox.isChecked():
+            if self.marketOpen:
+                if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
+                    self.orderStatus.setText('Invalid stock')
+                elif not self.amountEnter.text().isdigit():
+                    self.orderStatus.setText('Invalid amount')
+                    self.amountEnter.clear()
+                elif int(self.amountEnter.text()) > self.__stocks[self.ticker]:
+                    self.orderStatus.setText('Can\'t oversell assets')
+                else:
+                    if self.comboBox.currentIndex() == 0:
+                        if self.ticker in self.__stocks:
+                            self.amount += int(self.amountEnter.text())
+                            fillPrice = self.stock.info['currentPrice']
+                            self.__balance += fillPrice * int(self.amountEnter.text())
+                            self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                            self.__stocks[self.ticker] -= self.amount
+                            self.orderStatus.setText(f'Success!\n{self.amount} {self.ticker} filled @ {fillPrice}')
+                            self.amount = 0
+                        else:
+                            self.orderStatus.setText('You don\'t own any of that stock')
+                        self.update()
+            elif not self.marketOpen:
+                self.orderStatus.setText('Market closed')
+        else:
             if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
                 self.orderStatus.setText('Invalid stock')
             elif not self.amountEnter.text().isdigit():
@@ -188,8 +265,6 @@ class Logic(QMainWindow, Ui_MainWindow):
                     else:
                         self.orderStatus.setText('You don\'t own any of that stock')
                     self.update()
-        elif not self.marketOpen:
-            self.orderStatus.setText('Market closed')
 
     def clear(self):
         self.tickerEnter.clear()
@@ -224,14 +299,27 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.__balance = 0
         self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
         self.clear()
-        self.cleanUp()
+        self.clean_up()
 
     def settings(self):
-        self.__balance = int(self.amountEdit.text())
-        self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
-        self.stackedWidget.setCurrentIndex(2)
+        if self.amountEdit.text() == '':
+            self.stackedWidget.setCurrentIndex(2)
+            self.amountEdit.clear()
+        else:
+            try:
+                self.__balance = int(self.amountEdit.text())
+                self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
+                self.stackedWidget.setCurrentIndex(2)
+                self.amountEdit.clear()
+                self.settingsLabel.clear()
+            except ValueError:
+                self.settingsLabel.setText('Invalid Money Amount')
+        if not self.checkBox.isChecked():
+            self.marketStatus.setText('Market Status: N/A')
+        else:
+            self.check_market_status()
 
-    def cleanUp(self):
+    def clean_up(self):
         save_list = []
         with open('accounts.csv', 'r') as csv_file:
             csv_reader = list(csv.reader(csv_file))
@@ -245,6 +333,3 @@ class Logic(QMainWindow, Ui_MainWindow):
             csv_writer = csv.writer(csv_file)
             for element in save_list:
                 csv_writer.writerow(element)
-    # Add login on other pages
-
-    # Fix "middeling"
