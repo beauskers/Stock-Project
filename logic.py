@@ -7,7 +7,6 @@ import yfinance as yf
 import datetime as d
 import time
 from datetime import datetime, time
-from PyQt6.QtCore import QTimer, QTime
 
 
 eastern = pytz.timezone('US/Eastern')
