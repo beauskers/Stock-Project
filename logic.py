@@ -8,16 +8,9 @@ import datetime as d
 import time
 from datetime import datetime, time
 from PyQt6.QtCore import QTimer, QTime
-import time_machine
 
 
 eastern = pytz.timezone('US/Eastern')
-
-@time_machine.travel(eastern.localize(d.datetime(2024, 9, 5, 10, 24)))
-def test_delorean():
-    assert d.date.today().isoformat() == "2024-09-05"
-    print(datetime.now())
-
 
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -49,10 +42,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.__balance = 0
         self.__stocks = {}
 
-        self.timer = QTimer(self)
+        self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.check_market_status)
-        self.timer.setInterval(1000)
-        self.check_market_status()
+
+
 
     def check_email(self):
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
@@ -63,6 +56,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             return False
 
     def login(self):
+        self.timer.start(1000)
         self.email = self.usernameEnter.text()
         self.password = self.passwordEnter.text()
         with open('accounts.csv', 'r') as csv_file:
@@ -85,6 +79,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.passwordEnter.clear()
 
     def create_acc(self):
+        self.timer.start(1000)
         email_check = self.check_email()
         if email_check:
             self.password = self.createPassEnter.text()
@@ -99,6 +94,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.createPassEnter.clear()
                 self.confirmEnter.clear()
                 self.createStatus.setText('')
+                self.timer.start(1000)
                 self.stackedWidget.setCurrentIndex(2)
             else:
                 self.createStatus.setText('Passwords do not match')
@@ -108,32 +104,54 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def check_market_status(self):
         eastern = pytz.timezone('US/Eastern')
-        market_open_time = eastern.localize(datetime.combine(datetime.today(), time(9, 30)))
-        market_close_time = eastern.localize(datetime.combine(datetime.today(), time(16, 0)))
+        market_open_time = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(9, 30)))
+        market_close_time = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(16, 0)))
+        old_day = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(0, 0)))
         utcnow = d.datetime.now(tz=pytz.UTC)
         estnow = utcnow.astimezone(pytz.timezone('US/Eastern'))
         holidays = []
         todayHoliday = False
         day_of_week = self.today.weekday()
-        print(market_open_time)
-        print(market_close_time)
-        print(datetime.now(eastern))
-        print(market_close_time - datetime.now(eastern))
-        print(market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))
-        # need specific open for before market is opened and after market is closed for open
-        if day_of_week < 5 and todayHoliday == False:
-            if market_open_time <= datetime.now(eastern) <= market_close_time:
-                self.marketOpen = True
-                self.marketStatus.setText(
-                    f'Market Status: OPEN - Closes in {str((market_close_time - (datetime.now(eastern)))).split(".")[0]}')
-            else:
-                self.marketOpen = False
-                self.marketStatus.setText(
-                    f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern)))).split(".")[0]}')
-        elif day_of_week == 5 and todayHoliday == False:
+        # print(day_of_week)
+        # print(datetime.now(eastern))
+        # print(market_close_time - datetime.now(eastern)) # Issue happens after market close but on the NEXT DAY before market open, can change market_open_time to market_open_time.time(), but how to do that for current time?
+        # print(market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))
+
+        # Friday after close
+        if (day_of_week == 4 and datetime.now(eastern) > market_close_time) and todayHoliday == False:
+            self.marketOpen = False
+            self.marketStatus.setText(f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=3)))).split(".")[0]}')
+        # Saturday before "open"
+        elif (day_of_week == 5 and (datetime.now(eastern) + d.timedelta(days=1)) > market_open_time) and todayHoliday == False:
+            self.marketOpen = False
+            self.marketStatus.setText(f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=2)))).split(".")[0]}')
+        # Saturday after "close"
+        elif (day_of_week == 5 and datetime.now(eastern) > market_close_time) and todayHoliday == False:
+            self.marketOpen = False
+            self.marketStatus.setText(
+                f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=2)))).split(".")[0]}')
+        # Sunday before "open"
+        elif (day_of_week == 6 and (datetime.now(eastern) + d.timedelta(days=1)) > market_open_time) and todayHoliday == False:
+            self.marketOpen = False
+            self.marketStatus.setText(f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))).split(".")[0]}')
+        # Sunday after "close"
+        elif (day_of_week == 6 and datetime.now(eastern) > market_close_time) and todayHoliday == False:
             self.marketOpen = False
             self.marketStatus.setText(
                 f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))).split(".")[0]}')
+        # All other weekdays
+        elif (day_of_week < 4) or (day_of_week == 4 and datetime.now(eastern) < market_close_time) and todayHoliday == False:
+            if market_open_time <= datetime.now(eastern) <= market_close_time:
+                self.marketOpen = True
+                self.marketStatus.setText(f'Market Status: OPEN - Closes in {str((market_close_time - (datetime.now(eastern)))).split(".")[0]}')
+            else:
+                self.marketOpen = False
+                if datetime.now(eastern).hour >= market_close_time.hour:
+                    self.marketStatus.setText(
+                        f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern) - d.timedelta(days=1)))).split(".")[0]}')
+                else:
+                    self.marketStatus.setText(f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern)))).split(".")[0]}')
+
 
     def price_check(self):
         while True:
@@ -276,6 +294,9 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.amount = 0
         self.__stocks = {}
         self.stockShow.setText('')
+        self.stockBal.setText('')
+        self.checkBox.setChecked(True)
+        self.liveTimer.setChecked(True)
 
     def update(self):
         text = f''
@@ -300,6 +321,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
         self.clear()
         self.clean_up()
+        self.timer.stop()
 
     def settings(self):
         if self.amountEdit.text() == '':
@@ -315,9 +337,17 @@ class Logic(QMainWindow, Ui_MainWindow):
             except ValueError:
                 self.settingsLabel.setText('Invalid Money Amount')
         if not self.checkBox.isChecked():
+            self.liveTimer.setChecked(False)
+            self.timer.stop()
             self.marketStatus.setText('Market Status: N/A')
         else:
             self.check_market_status()
+        # if self.liveTimer.isChecked() and not self.checkBox.isChecked():
+        #     self.settingsLabel.setText('TruMarket must be enabled')
+        if self.liveTimer.isChecked():
+            self.timer.start(1000)
+        if not self.liveTimer.isChecked():
+            self.timer.stop()
 
     def clean_up(self):
         save_list = []
