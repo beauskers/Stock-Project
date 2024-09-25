@@ -7,6 +7,8 @@ import yfinance as yf
 import datetime as d
 import time
 from datetime import datetime, time
+import os
+import sys
 
 
 eastern = pytz.timezone('US/Eastern')
@@ -19,6 +21,11 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.amount = 0
         self.setupUi(self)
         self.marketOpen = None
+
+        if getattr(sys, 'frozen', False):
+            self.application_path = os.path.join(sys._MEIPASS, 'accounts.csv')
+        else:
+            self.application_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'accounts.csv')
 
         self.today = d.date.today()
 
@@ -44,8 +51,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.check_market_status)
 
-
-
     def check_email(self):
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
         self.email = self.createUserEnter.text()
@@ -55,13 +60,15 @@ class Logic(QMainWindow, Ui_MainWindow):
             return False
 
     def login(self):
-        self.timer.start(1000)
+        empty = True
         self.email = self.usernameEnter.text()
         self.password = self.passwordEnter.text()
-        with open('accounts.csv', 'r') as csv_file:
+        with open(self.application_path, 'r') as csv_file:
             csv_reader = csv.reader(csv_file)
             for line in csv_reader:
+                empty = False
                 if self.email == line[0] and self.password == line[1]:
+                    self.timer.start(1000)
                     self.__stocks.clear()
                     self.__balance = float(line[2])
                     self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
@@ -76,6 +83,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                 else:
                     self.loginStatus.setText('Incorrect email or password')
                     self.passwordEnter.clear()
+            if empty:
+                self.loginStatus.setText('No accounts in database')
 
     def create_acc(self):
         self.timer.start(1000)
@@ -84,7 +93,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.password = self.createPassEnter.text()
             password_check = self.confirmEnter.text()
             if password_check == self.password:
-                with open('accounts.csv', 'a', newline='') as csv_file:
+                with open(self.application_path, 'a', newline='') as csv_file:
                     csv_writer = csv.writer(csv_file)
                     account_info = [self.email, self.password, 0]
                     csv_writer.writerow(account_info)
@@ -105,7 +114,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         eastern = pytz.timezone('US/Eastern')
         market_open_time = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(9, 30)))
         market_close_time = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(16, 0)))
-        old_day = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(0, 0)))
+
         utcnow = d.datetime.now(tz=pytz.UTC)
         estnow = utcnow.astimezone(pytz.timezone('US/Eastern'))
         holidays = []
@@ -308,7 +317,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.stockBal.setText(f'${total:.2f}')
 
     def logout(self):
-        with open('accounts.csv', 'a', newline='') as csvfile:
+        with open(self.application_path, 'a', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
             info = [self.email, self.password, self.__balance]
             for stock, amount in self.__stocks.items():
@@ -350,7 +359,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def clean_up(self):
         save_list = []
-        with open('accounts.csv', 'r') as csv_file:
+        with open(self.application_path, 'r') as csv_file:
             csv_reader = list(csv.reader(csv_file))
             if csv_reader:
                 test = csv_reader[-1]
@@ -358,7 +367,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 for row in reversed(csv_reader[:-1]):
                     if row[0] not in [element[0] for element in save_list]:
                         save_list.append(row)
-        with open('accounts.csv', 'w') as csv_file:
+        with open(self.application_path, 'w') as csv_file:
             csv_writer = csv.writer(csv_file)
             for element in save_list:
                 csv_writer.writerow(element)
