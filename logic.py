@@ -314,7 +314,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             text = text + f'{stock}: {amount} - {price * amount:.2f}\n'
             total += (price * amount)
         self.stockShow.setText(text)
-        self.stockBal.setText(f'${total:.2f}')
+        self.stockBal.setText(f'Portfolio Value: ${total:.2f}')
 
     def logout(self):
         with open(self.application_path, 'a', newline='') as csvfile:
