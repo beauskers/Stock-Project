@@ -10,9 +10,6 @@ from datetime import datetime, time
 import os
 import sys
 
-
-eastern = pytz.timezone('US/Eastern')
-
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
@@ -48,10 +45,18 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.__balance = 0
         self.__stocks = {}
 
-        self.timer = QtCore.QTimer(self)
-        self.timer.timeout.connect(self.check_market_status)
+        self.market_timer = QtCore.QTimer(self)
+        self.market_timer.timeout.connect(self.check_market_status)
 
-    def check_email(self):
+        self.cooldown_timer = QtCore.QTimer(self)
+
+    def check_email(self) -> bool:
+        """
+        This function checks to see if the email entered is valid.
+
+        :returns:
+            bool: True or False.
+        """
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
         self.email = self.createUserEnter.text()
         if re.fullmatch(regex, self.email):
@@ -59,7 +64,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         else:
             return False
 
-    def login(self):
+    def login(self) -> None:
+        """
+        Logs the user into the app with an existing account.
+        """
         empty = True
         self.email = self.usernameEnter.text()
         self.password = self.passwordEnter.text()
@@ -68,7 +76,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             for line in csv_reader:
                 empty = False
                 if self.email == line[0] and self.password == line[1]:
-                    self.timer.start(1000)
+                    self.market_timer.start(1000)
                     self.__stocks.clear()
                     self.__balance = float(line[2])
                     self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
@@ -86,13 +94,16 @@ class Logic(QMainWindow, Ui_MainWindow):
             if empty:
                 self.loginStatus.setText('No accounts in database')
 
-    def create_acc(self):
-        self.timer.start(1000)
+    def create_acc(self) -> None:
+        """
+        Creates a new account for the user and logs them into the app.
+        """
         email_check = self.check_email()
         if email_check:
             self.password = self.createPassEnter.text()
             password_check = self.confirmEnter.text()
             if password_check == self.password:
+                self.market_timer.start(1000)
                 with open(self.application_path, 'a', newline='') as csv_file:
                     csv_writer = csv.writer(csv_file)
                     account_info = [self.email, self.password, 0]
@@ -102,7 +113,6 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.createPassEnter.clear()
                 self.confirmEnter.clear()
                 self.createStatus.setText('')
-                self.timer.start(1000)
                 self.stackedWidget.setCurrentIndex(2)
             else:
                 self.createStatus.setText('Passwords do not match')
@@ -110,7 +120,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         else:
             self.createStatus.setText('Email is invalid')
 
-    def check_market_status(self):
+    def check_market_status(self) -> None:
+        """
+        Checks if the Nasdaq stock market is currently open or closed.
+        """
         eastern = pytz.timezone('US/Eastern')
         market_open_time = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(9, 30)))
         market_close_time = eastern.localize(datetime.combine(datetime.now(eastern).date(), time(16, 0)))
@@ -160,8 +173,14 @@ class Logic(QMainWindow, Ui_MainWindow):
                 else:
                     self.marketStatus.setText(f'Market Status: CLOSED - Opens in {str((market_open_time - (datetime.now(eastern)))).split(".")[0]}')
 
+    def cooldown(self):
+        self.checkButton.setEnabled(False)
+        self.cooldown_timer.singleShot(1000, lambda: self.checkButton.setDisabled(False))
 
-    def price_check(self):
+    def price_check(self) -> None:
+        """
+        Gets the current details of a stock.
+        """
         while True:
             if self.tickerEnter.text() == '':
                 self.stockInfo.setText('No ticker entered')
@@ -175,18 +194,28 @@ class Logic(QMainWindow, Ui_MainWindow):
                 break
             else:
                 yesterday = self.today - d.timedelta(days=1)
-                open = self.stock.info['open']
                 prev = self.stock.info['previousClose']
-                f2wkch = self.stock.info['52WeekChange']
+                open = self.stock.info['open']
+                low = self.stock.info['regularMarketDayLow']
+                high = self.stock.info['regularMarketDayHigh']
+                fiftytwo_week_low = self.stock.info['fiftyTwoWeekLow']
+                fiftytwo_week_high = self.stock.info['fiftyTwoWeekHigh']
+                # f2wkch = self.stock.info['52WeekChange']
                 rec = self.stock.info['recommendationKey']
-                self.stockInfo.setText(f'Current price: {round(price, 2)} '
-                                       f'\n{self.today} open: {open} '
-                                       f'\n{yesterday} close: {prev} '
-                                       f'\n52 Week Change: {round(f2wkch, 3)}%'
-                                       f'\nAnalyst Recommendation: {rec}')
+                self.stockInfo.setText(f'Current price: {round(price, 2)}'
+                                       f'\n{yesterday} close: {prev}'
+                                       f'\n{self.today} open: {open}'
+                                       f'\nToday\'s range: {low} - {high}'
+                                       f'\n52 Week Range: {fiftytwo_week_low} - {fiftytwo_week_high}'
+                                       # f'\n52 Week Change: {round(f2wkch, 3)}%'
+                                       f'\nAnalyst Rec: {rec}')
                 break
+        self.cooldown()
 
-    def buy_stock(self):
+    def buy_stock(self) -> None:
+        """
+        Buys stock for the user based on what they entered.
+        """
         if self.checkBox.isChecked():
             if self.marketOpen:
                 if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
@@ -195,7 +224,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.orderStatus.setText('Invalid amount')
                     self.amountEnter.clear()
                 elif self.stock.info['currentPrice'] * int(self.amountEnter.text()) > self.__balance:
-                    self.orderStatus.setText('Too poor')
+                    self.orderStatus.setText('Not enough funds')
                 else:
                     if self.comboBox.currentIndex() == 0:
                         if self.ticker in self.__stocks:
@@ -245,7 +274,10 @@ class Logic(QMainWindow, Ui_MainWindow):
                         self.amount = 0
                     self.update()
 
-    def sell_stock(self):
+    def sell_stock(self) -> None:
+        """
+        Sells stock for the user based on what they entered.
+        """
         if self.checkBox.isChecked():
             if self.marketOpen:
                 if self.stockInfo.text() == "Invalid ticker" or self.stock is None:
@@ -292,7 +324,10 @@ class Logic(QMainWindow, Ui_MainWindow):
                         self.orderStatus.setText('You don\'t own any of that stock')
                     self.update()
 
-    def clear(self):
+    def clear(self) -> None:
+        """
+        Clears multiple objects
+        """
         self.tickerEnter.clear()
         # self.comboBox.clear()
         self.loginStatus.setText('')
@@ -306,7 +341,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.checkBox.setChecked(True)
         self.liveTimer.setChecked(True)
 
-    def update(self):
+    def update(self) -> None:
+        """
+        Updates the stock portfolio's value after a stock buy or sell.
+        """
         text = f''
         total = 0
         for stock, amount in self.__stocks.items():
@@ -316,7 +354,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.stockShow.setText(text)
         self.stockBal.setText(f'Portfolio Value: ${total:.2f}')
 
-    def logout(self):
+    def logout(self) -> None:
+        """
+        Logs the user out of their account and saves their data.
+        """
         with open(self.application_path, 'a', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
             info = [self.email, self.password, self.__balance]
@@ -329,9 +370,12 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.balLabel.setText(f'Account Balance: ${self.__balance:.2f}')
         self.clear()
         self.clean_up()
-        self.timer.stop()
+        self.market_timer.stop()
 
-    def settings(self):
+    def settings(self) -> None:
+        """
+        Deals with all the options in the settings page
+        """
         if self.amountEdit.text() == '':
             self.stackedWidget.setCurrentIndex(2)
             self.amountEdit.clear()
@@ -346,18 +390,21 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.settingsLabel.setText('Invalid Money Amount')
         if not self.checkBox.isChecked():
             self.liveTimer.setChecked(False)
-            self.timer.stop()
+            self.market_timer.stop()
             self.marketStatus.setText('Market Status: N/A')
         else:
             self.check_market_status()
         # if self.liveTimer.isChecked() and not self.checkBox.isChecked():
         #     self.settingsLabel.setText('TruMarket must be enabled')
         if self.liveTimer.isChecked():
-            self.timer.start(1000)
+            self.market_timer.start(1000)
         if not self.liveTimer.isChecked():
-            self.timer.stop()
+            self.market_timer.stop()
 
-    def clean_up(self):
+    def clean_up(self) -> None:
+        """
+        Optimizes the multiple account system save file to keep space and lag to a minimum.
+        """
         save_list = []
         with open(self.application_path, 'r') as csv_file:
             csv_reader = list(csv.reader(csv_file))
