@@ -12,7 +12,7 @@ A paper trading (stock trading without the use of real money) simulator that's c
 - Configurable settings
 ## Screenshots
 
-![App Screenshot](https://github.com/user-attachments/assets/68662a24-46d0-461a-8825-7931c1e16b77)
+![App Screenshot](https://github.com/user-attachments/assets/3c5d8cab-1363-40e8-a2f0-7a16c33c8dfd)
 
 
 ## Authors
