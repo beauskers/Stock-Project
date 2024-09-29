@@ -14,6 +14,9 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(625, 625)
         MainWindow.setMinimumSize(QtCore.QSize(625, 625))
+        font = QtGui.QFont()
+        font.setFamily(".AppleSystemUIFont")
+        MainWindow.setFont(font)
         self.centralWidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralWidget.setStyleSheet("background-color: rgb(231, 231, 231);")
         self.centralWidget.setObjectName("centralWidget")
@@ -33,7 +36,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.loginTitleLabel = QtWidgets.QLabel(parent=self.loginPage)
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
+        font.setFamily("Inter")
         font.setPointSize(65)
         font.setBold(True)
         # font.setWeight(75)
@@ -45,7 +48,7 @@ class Ui_MainWindow(object):
         self.loginTitle_Widget = QtWidgets.QWidget(parent=self.loginPage)
         self.loginTitle_Widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
+        font.setFamily("Inter")
         self.loginTitle_Widget.setFont(font)
         self.loginTitle_Widget.setObjectName("loginTitle_Widget")
         self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.loginTitle_Widget)
@@ -71,6 +74,7 @@ class Ui_MainWindow(object):
         self.loginLabel.setMinimumSize(QtCore.QSize(0, 0))
         self.loginLabel.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(30)
         font.setBold(True)
         # font.setWeight(75)
@@ -88,6 +92,7 @@ class Ui_MainWindow(object):
         self.usernameLabel = QtWidgets.QLabel(parent=self.username_Widget)
         self.usernameLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.usernameLabel.setFont(font)
@@ -98,6 +103,9 @@ class Ui_MainWindow(object):
         self.usernameEnter = QtWidgets.QLineEdit(parent=self.username_Widget)
         self.usernameEnter.setMinimumSize(QtCore.QSize(175, 30))
         self.usernameEnter.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.usernameEnter.setFont(font)
         self.usernameEnter.setStyleSheet("border-width: 10px;\n"
 "border-radius: 5px;\n"
 "border-color: rgb(0, 0, 0);\n"
@@ -115,6 +123,7 @@ class Ui_MainWindow(object):
         self.passwordLabel = QtWidgets.QLabel(parent=self.password_Widget)
         self.passwordLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.passwordLabel.setFont(font)
@@ -124,6 +133,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.passwordLabel)
         self.passwordEnter = QtWidgets.QLineEdit(parent=self.password_Widget)
         self.passwordEnter.setMinimumSize(QtCore.QSize(175, 30))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.passwordEnter.setFont(font)
         self.passwordEnter.setStyleSheet("border-width: 10px;\n"
 "border-radius: 5px;\n"
 "border-color: rgb(0, 0, 0);\n"
@@ -133,6 +145,9 @@ class Ui_MainWindow(object):
         self.passwordEnter.setObjectName("passwordEnter")
         self.verticalLayout_4.addWidget(self.passwordEnter)
         self.loginStatus = QtWidgets.QLabel(parent=self.password_Widget)
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.loginStatus.setFont(font)
         self.loginStatus.setStyleSheet("color: rgb(0, 0, 0);")
         self.loginStatus.setText("")
         self.loginStatus.setObjectName("loginStatus")
@@ -141,6 +156,7 @@ class Ui_MainWindow(object):
         self.forgotBtn = QtWidgets.QPushButton(parent=self.loginFrame)
         self.forgotBtn.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(15)
         self.forgotBtn.setFont(font)
         self.forgotBtn.setStyleSheet("color: rgb(88, 88, 88)")
@@ -154,6 +170,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.loginBtn = QtWidgets.QPushButton(parent=self.loginBtn_Widget)
         self.loginBtn.setMinimumSize(QtCore.QSize(175, 40))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.loginBtn.setFont(font)
         self.loginBtn.setStyleSheet("QPushButton {\n"
 "background-color: rgb(21, 94, 228);\n"
 "color: rgb(255, 255, 255);\n"
@@ -178,6 +197,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.addWidget(self.loginBtn_Widget, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.toCreateBtn = QtWidgets.QPushButton(parent=self.loginFrame)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(14)
         self.toCreateBtn.setFont(font)
         self.toCreateBtn.setStyleSheet("color: rgb(21, 94, 228);")
@@ -192,7 +212,7 @@ class Ui_MainWindow(object):
         self.createTitleLabel = QtWidgets.QLabel(parent=self.createPage)
         self.createTitleLabel.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
+        font.setFamily("Inter")
         font.setPointSize(65)
         font.setBold(True)
         # font.setWeight(75)
@@ -204,7 +224,7 @@ class Ui_MainWindow(object):
         self.createTitle_Widget = QtWidgets.QWidget(parent=self.createPage)
         self.createTitle_Widget.setMaximumSize(QtCore.QSize(300, 16777215))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
+        font.setFamily("Inter")
         self.createTitle_Widget.setFont(font)
         self.createTitle_Widget.setObjectName("createTitle_Widget")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.createTitle_Widget)
@@ -229,6 +249,7 @@ class Ui_MainWindow(object):
         self.createLabel = QtWidgets.QLabel(parent=self.create_Widget)
         self.createLabel.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(23)
         font.setBold(True)
         # font.setWeight(75)
@@ -246,6 +267,7 @@ class Ui_MainWindow(object):
         self.createUserLabel = QtWidgets.QLabel(parent=self.createUser_Widget)
         self.createUserLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.createUserLabel.setFont(font)
@@ -256,6 +278,9 @@ class Ui_MainWindow(object):
         self.createUserEnter = QtWidgets.QLineEdit(parent=self.createUser_Widget)
         self.createUserEnter.setMinimumSize(QtCore.QSize(175, 30))
         self.createUserEnter.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.createUserEnter.setFont(font)
         self.createUserEnter.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-width: 10px;\n"
 "border-radius: 5px;\n"
@@ -272,6 +297,7 @@ class Ui_MainWindow(object):
         self.createPassLabel = QtWidgets.QLabel(parent=self.createPass_Widget)
         self.createPassLabel.setMaximumSize(QtCore.QSize(100, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.createPassLabel.setFont(font)
@@ -281,6 +307,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.addWidget(self.createPassLabel)
         self.createPassEnter = QtWidgets.QLineEdit(parent=self.createPass_Widget)
         self.createPassEnter.setMinimumSize(QtCore.QSize(175, 30))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.createPassEnter.setFont(font)
         self.createPassEnter.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-width: 10px;\n"
 "border-radius: 5px;\n"
@@ -298,6 +327,7 @@ class Ui_MainWindow(object):
         self.confirmLabel = QtWidgets.QLabel(parent=self.confirm_Widget)
         self.confirmLabel.setMaximumSize(QtCore.QSize(125, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.confirmLabel.setFont(font)
@@ -306,6 +336,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.addWidget(self.confirmLabel)
         self.confirmEnter = QtWidgets.QLineEdit(parent=self.confirm_Widget)
         self.confirmEnter.setMinimumSize(QtCore.QSize(175, 30))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.confirmEnter.setFont(font)
         self.confirmEnter.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-width: 10px;\n"
 "border-radius: 5px;\n"
@@ -313,12 +346,15 @@ class Ui_MainWindow(object):
         self.confirmEnter.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.confirmEnter.setObjectName("confirmEnter")
         self.verticalLayout_11.addWidget(self.confirmEnter)
-        self.createStatus = QtWidgets.QLabel(parent=self.confirm_Widget)
+        self.verticalLayout_15.addWidget(self.confirm_Widget, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.createStatus = QtWidgets.QLabel(parent=self.createFrame)
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.createStatus.setFont(font)
         self.createStatus.setStyleSheet("color: rgb(0, 0, 0);")
         self.createStatus.setText("")
         self.createStatus.setObjectName("createStatus")
-        self.verticalLayout_11.addWidget(self.createStatus, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.verticalLayout_15.addWidget(self.confirm_Widget, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout_15.addWidget(self.createStatus)
         self.createBtn_Widget = QtWidgets.QWidget(parent=self.createFrame)
         self.createBtn_Widget.setMinimumSize(QtCore.QSize(0, 0))
         self.createBtn_Widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -327,6 +363,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_20.setObjectName("verticalLayout_20")
         self.createBtn = QtWidgets.QPushButton(parent=self.createBtn_Widget)
         self.createBtn.setMinimumSize(QtCore.QSize(175, 40))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.createBtn.setFont(font)
         self.createBtn.setStyleSheet("QPushButton {\n"
 "background-color: rgb(21, 94, 228);\n"
 "color: rgb(255, 255, 255);\n"
@@ -359,6 +398,7 @@ class Ui_MainWindow(object):
         self.marketStatus.setEnabled(True)
         self.marketStatus.setMaximumSize(QtCore.QSize(16777215, 100))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(23)
         font.setBold(True)
         # font.setWeight(75)
@@ -383,6 +423,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.tickerEnter.sizePolicy().hasHeightForWidth())
         self.tickerEnter.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(False)
         # font.setWeight(50)
         self.tickerEnter.setFont(font)
@@ -401,6 +442,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.checkButton.sizePolicy().hasHeightForWidth())
         self.checkButton.setSizePolicy(sizePolicy)
         self.checkButton.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.checkButton.setFont(font)
         self.checkButton.setStyleSheet("QPushButton {\n"
 "background-color: rgb(21, 94, 228);\n"
 "color: rgb(255, 255, 255);\n"
@@ -422,6 +466,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.addWidget(self.checkButton)
         self.stockInfo = QtWidgets.QLabel(parent=self.widget_3)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(13)
         self.stockInfo.setFont(font)
         self.stockInfo.setStyleSheet("color: rgb(0, 0, 0);")
@@ -445,6 +490,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_21.setObjectName("verticalLayout_21")
         self.comboBox = QtWidgets.QComboBox(parent=self.widget_8)
         self.comboBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.comboBox.setFont(font)
         self.comboBox.setStyleSheet("background-color: rgb(104, 104, 104);\n"
 "border-radius: 5px;\n"
 "color: rgb(255, 255, 255);\n"
@@ -456,6 +504,7 @@ class Ui_MainWindow(object):
         self.orderStatus = QtWidgets.QLabel(parent=self.widget_8)
         self.orderStatus.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(13)
         font.setBold(False)
         # font.setWeight(50)
@@ -478,6 +527,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.amountEnter.sizePolicy().hasHeightForWidth())
         self.amountEnter.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(False)
         # font.setWeight(50)
         self.amountEnter.setFont(font)
@@ -502,6 +552,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.buyButton.sizePolicy().hasHeightForWidth())
         self.buyButton.setSizePolicy(sizePolicy)
         self.buyButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.buyButton.setFont(font)
         self.buyButton.setStyleSheet("QPushButton {\n"
 "    background-color: rgb(0, 255, 0);\n"
 "    color: rgb(0, 0, 0);\n"
@@ -522,6 +575,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.buyButton)
         self.sellButton = QtWidgets.QPushButton(parent=self.widget_7)
         self.sellButton.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.sellButton.setFont(font)
         self.sellButton.setStyleSheet("QPushButton {\n"
 "background-color: rgb(255, 0, 0);\n"
 "color: rgb(0, 0, 0);\n"
@@ -559,6 +615,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.setObjectName("verticalLayout_23")
         self.balLabel = QtWidgets.QLabel(parent=self.widget_4)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.balLabel.setFont(font)
@@ -573,6 +630,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.stockBal.sizePolicy().hasHeightForWidth())
         self.stockBal.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.stockBal.setFont(font)
@@ -586,6 +644,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.stockShow.sizePolicy().hasHeightForWidth())
         self.stockShow.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.stockShow.setFont(font)
         self.stockShow.setStyleSheet("color: rgb(0, 0, 0);\n"
 "border-radius: 5px;\n"
 "border: 2px solid black;")
@@ -601,6 +662,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.logoutBtn = QtWidgets.QPushButton(parent=self.widget_10)
         self.logoutBtn.setMinimumSize(QtCore.QSize(0, 25))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.logoutBtn.setFont(font)
         self.logoutBtn.setStyleSheet("QPushButton {\n"
 "background-color: rgb(104, 104, 104);\n"
 "border-radius: 5px;\n"
@@ -619,6 +683,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.addWidget(self.logoutBtn)
         self.toSettingsBtn = QtWidgets.QPushButton(parent=self.widget_10)
         self.toSettingsBtn.setMinimumSize(QtCore.QSize(0, 25))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.toSettingsBtn.setFont(font)
         self.toSettingsBtn.setStyleSheet("QPushButton {\n"
 "background-color: rgb(104, 104, 104);\n"
 "border-radius: 5px;\n"
@@ -663,6 +730,7 @@ class Ui_MainWindow(object):
         self.label.setMinimumSize(QtCore.QSize(0, 0))
         self.label.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setPointSize(15)
         font.setBold(True)
         # font.setWeight(75)
@@ -677,6 +745,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.amountEdit.sizePolicy().hasHeightForWidth())
         self.amountEdit.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.amountEdit.setFont(font)
         self.amountEdit.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-width: 10px;\n"
 "border-radius: 5px;\n"
@@ -691,6 +762,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.settingsLabel.sizePolicy().hasHeightForWidth())
         self.settingsLabel.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.settingsLabel.setFont(font)
         self.settingsLabel.setStyleSheet("color: rgb(0, 0, 0);")
         self.settingsLabel.setText("")
         self.settingsLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -704,6 +778,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.checkBox.sizePolicy().hasHeightForWidth())
         self.checkBox.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.checkBox.setFont(font)
@@ -720,6 +795,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.liveTimer.sizePolicy().hasHeightForWidth())
         self.liveTimer.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
+        font.setFamily("Inter")
         font.setBold(True)
         # font.setWeight(75)
         self.liveTimer.setFont(font)
@@ -735,6 +811,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.buttonEdit.sizePolicy().hasHeightForWidth())
         self.buttonEdit.setSizePolicy(sizePolicy)
         self.buttonEdit.setMinimumSize(QtCore.QSize(250, 50))
+        font = QtGui.QFont()
+        font.setFamily("Inter")
+        self.buttonEdit.setFont(font)
         self.buttonEdit.setStyleSheet("QPushButton {\n"
 "background-color: rgb(104, 104, 104);\n"
 "border-radius: 5px;\n"

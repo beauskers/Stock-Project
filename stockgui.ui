@@ -16,6 +16,11 @@
     <height>625</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>.AppleSystemUIFont</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Stockify</string>
   </property>
@@ -44,7 +49,7 @@
             <widget class="QLabel" name="loginTitleLabel">
              <property name="font">
               <font>
-               <family>Helvetica</family>
+               <family>Inter</family>
                <pointsize>65</pointsize>
                <weight>75</weight>
                <bold>true</bold>
@@ -71,7 +76,7 @@
              </property>
              <property name="font">
               <font>
-               <family>Helvetica</family>
+               <family>Inter</family>
               </font>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_10"/>
@@ -133,6 +138,7 @@ border-radius: 10px;</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <pointsize>30</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
@@ -171,6 +177,7 @@ border-radius: 10px;</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -199,6 +206,11 @@ border-radius: 10px;</string>
                      <width>16777215</width>
                      <height>16777215</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">border-width: 10px;
@@ -234,6 +246,7 @@ color: rgb(0, 0, 0);</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -257,6 +270,11 @@ color: rgb(0, 0, 0);</string>
                      <height>30</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">border-width: 10px;
 border-radius: 5px;
@@ -271,6 +289,11 @@ color: rgb(0, 0, 0);</string>
                  </item>
                  <item alignment="Qt::AlignHCenter">
                   <widget class="QLabel" name="loginStatus">
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">color: rgb(0, 0, 0);</string>
                    </property>
@@ -292,6 +315,7 @@ color: rgb(0, 0, 0);</string>
                 </property>
                 <property name="font">
                  <font>
+                  <family>Inter</family>
                   <pointsize>15</pointsize>
                  </font>
                 </property>
@@ -326,6 +350,11 @@ color: rgb(0, 0, 0);</string>
                      <height>40</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">QPushButton {
 background-color: rgb(21, 94, 228);
@@ -359,6 +388,7 @@ QPushButton:pressed {
                <widget class="QPushButton" name="toCreateBtn">
                 <property name="font">
                  <font>
+                  <family>Inter</family>
                   <pointsize>14</pointsize>
                  </font>
                 </property>
@@ -387,7 +417,7 @@ QPushButton:pressed {
              </property>
              <property name="font">
               <font>
-               <family>Helvetica</family>
+               <family>Inter</family>
                <pointsize>65</pointsize>
                <weight>75</weight>
                <bold>true</bold>
@@ -414,7 +444,7 @@ QPushButton:pressed {
              </property>
              <property name="font">
               <font>
-               <family>Helvetica</family>
+               <family>Inter</family>
               </font>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_9"/>
@@ -470,6 +500,7 @@ border-radius: 10px;</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <pointsize>23</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
@@ -508,6 +539,7 @@ border-radius: 10px;</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -536,6 +568,11 @@ border-radius: 10px;</string>
                      <width>16777215</width>
                      <height>16777215</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgb(255, 255, 255);
@@ -570,6 +607,7 @@ color: rgb(0, 0, 0);</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -592,6 +630,11 @@ color: rgb(0, 0, 0);</string>
                      <width>175</width>
                      <height>30</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgb(255, 255, 255);
@@ -632,6 +675,7 @@ color: rgb(0, 0, 0);</string>
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -652,6 +696,11 @@ color: rgb(0, 0, 0);</string>
                      <height>30</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgb(255, 255, 255);
 border-width: 10px;
@@ -663,17 +712,22 @@ color: rgb(0, 0, 0);</string>
                    </property>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignHCenter">
-                  <widget class="QLabel" name="createStatus">
-                   <property name="styleSheet">
-                    <string notr="true">color: rgb(0, 0, 0);</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="createStatus">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(0, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
                </widget>
               </item>
               <item alignment="Qt::AlignHCenter">
@@ -698,6 +752,11 @@ color: rgb(0, 0, 0);</string>
                      <width>175</width>
                      <height>40</height>
                     </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">QPushButton {
@@ -753,6 +812,7 @@ QPushButton:pressed {
              </property>
              <property name="font">
               <font>
+               <family>Inter</family>
                <pointsize>23</pointsize>
                <weight>75</weight>
                <bold>true</bold>
@@ -791,6 +851,7 @@ QPushButton:pressed {
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>50</weight>
                      <bold>false</bold>
                     </font>
@@ -821,6 +882,11 @@ border: 2px solid black;</string>
                      <height>0</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">QPushButton {
 background-color: rgb(21, 94, 228);
@@ -849,6 +915,7 @@ QPushButton:pressed {
                   <widget class="QLabel" name="stockInfo">
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <pointsize>13</pointsize>
                     </font>
                    </property>
@@ -886,6 +953,11 @@ QPushButton:pressed {
                         <height>16777215</height>
                        </size>
                       </property>
+                      <property name="font">
+                       <font>
+                        <family>Inter</family>
+                       </font>
+                      </property>
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(104, 104, 104);
 border-radius: 5px;
@@ -914,6 +986,7 @@ border: 2px solid black;</string>
                       </property>
                       <property name="font">
                        <font>
+                        <family>Inter</family>
                         <pointsize>13</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
@@ -949,6 +1022,7 @@ border: 2px solid black;</string>
                       </property>
                       <property name="font">
                        <font>
+                        <family>Inter</family>
                         <weight>50</weight>
                         <bold>false</bold>
                        </font>
@@ -994,6 +1068,11 @@ border: 2px solid black;</string>
                         <height>16777215</height>
                        </size>
                       </property>
+                      <property name="font">
+                       <font>
+                        <family>Inter</family>
+                       </font>
+                      </property>
                       <property name="styleSheet">
                        <string notr="true">QPushButton {
     background-color: rgb(0, 255, 0);
@@ -1024,6 +1103,11 @@ QPushButton:pressed {
                         <width>16777215</width>
                         <height>16777215</height>
                        </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>Inter</family>
+                       </font>
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QPushButton {
@@ -1073,6 +1157,7 @@ QPushButton:pressed {
                   <widget class="QLabel" name="balLabel">
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -1098,6 +1183,7 @@ QPushButton:pressed {
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -1120,6 +1206,11 @@ QPushButton:pressed {
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">color: rgb(0, 0, 0);
@@ -1154,6 +1245,11 @@ border: 2px solid black;</string>
                   <height>25</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
 background-color: rgb(104, 104, 104);
@@ -1182,6 +1278,11 @@ QPushButton:pressed {
                   <width>0</width>
                   <height>25</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                 </font>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
@@ -1245,6 +1346,7 @@ QPushButton:pressed {
                    </property>
                    <property name="font">
                     <font>
+                     <family>Inter</family>
                      <pointsize>15</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
@@ -1269,6 +1371,11 @@ QPushButton:pressed {
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                    </font>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgb(255, 255, 255);
 border-width: 10px;
@@ -1288,6 +1395,11 @@ border: 2px solid black;</string>
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                 </font>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">color: rgb(0, 0, 0);</string>
@@ -1313,6 +1425,7 @@ border: 2px solid black;</string>
                 </property>
                 <property name="font">
                  <font>
+                  <family>Inter</family>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -1344,6 +1457,7 @@ border: 2px solid black;</string>
                 </property>
                 <property name="font">
                  <font>
+                  <family>Inter</family>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -1375,6 +1489,11 @@ border: 2px solid black;</string>
                   <width>250</width>
                   <height>50</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                 </font>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
